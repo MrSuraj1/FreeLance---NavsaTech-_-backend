@@ -1,21 +1,24 @@
 const express = require('express');
 const mongoose = require("mongoose");
-const cors = require('cors');
 const shop = require("./routes/shop");
 const home = require('./routes/home');
 const orders = require('./routes/orderRoutes');
 
-const app = express();
-const PORT = process.env.PORT || 5000;
 
-// CORS setup
+
+const cors = require('cors');
+
 app.use(cors({
   origin: [
-    "https://68c562c27d27b400087ed18d--navsatech.netlify.app",
-    "http://localhost:5173"
+    "https://68c5664b58c59800083e93bb--navsatech.netlify.app", // your deployed frontend
+    "http://localhost:5173" // local dev frontend
   ],
-  credentials: true,
+  credentials: true, // if you use cookies or auth headers
 }));
+
+
+const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
