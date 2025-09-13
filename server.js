@@ -10,7 +10,10 @@ const PORT = process.env.PORT || 5000;
 
 // CORS setup
 app.use(cors({
-  origin: ["https://68c560db9db0af95c70d3430--navsatech.netlify.app/", "http://localhost:5173"], // frontend URLs
+  origin: [
+    "https://68c562c27d27b400087ed18d--navsatech.netlify.app",
+    "http://localhost:5173"
+  ],
   credentials: true,
 }));
 
