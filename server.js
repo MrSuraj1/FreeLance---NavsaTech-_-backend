@@ -13,6 +13,7 @@ app.use(cors({
  origin: [
     "https://68c5c43758c598000849b4c7--navsatech.netlify.app/", // preview build
     "https://navsatech.netlify.app",                          // final domain
+     /\.netlify\.app$/ ,   
     "http://localhost:5173"                                   // local dev
   ],
   credentials: true,
