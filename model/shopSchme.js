@@ -15,3 +15,17 @@ const productSchema = new mongoose.Schema(
 productSchema.index({ name: 1 });
 
 module.exports = mongoose.model("Product", productSchema);
+
+
+// const mongoose = require("mongoose");
+
+// const productSchema = new mongoose.Schema({
+//   name: { type: String, required: true },
+//   price: { type: String, required: true },
+//   description: { type: String },
+//   image: { type: String },
+// }, { timestamps: true });
+
+// productSchema.index({ name: 1 });
+
+// module.exports = mongoose.model("Product", productSchema);
