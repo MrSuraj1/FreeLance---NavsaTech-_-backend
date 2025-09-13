@@ -1,32 +1,30 @@
 const express = require('express');
-const moongoose = require("mongoose");
-const app = express();
-const shop = require("./routes/shop")
-const home = require('./routes/home'); // Import router
+const mongoose = require("mongoose");
 const cors = require('cors');
-const orderd = require('./routes/orderRoutes')
+const shop = require("./routes/shop");
+const home = require('./routes/home');
+const orders = require('./routes/orderRoutes');
 
-const Port = 5000;
+const app = express();
+const PORT = process.env.PORT || 5000;
 
+// CORS setup
+app.use(cors({
+  origin: ["https://68c560db9db0af95c70d3430--navsatech.netlify.app/", "http://localhost:5173"], // frontend URLs
+  credentials: true,
+}));
 
-
-app.use(cors());
 app.use(express.json());
-// Use routes
+
+// Routes
 app.use('/', home);
-app.use('/api/shop' , shop);
+app.use('/api/shop', shop);
+app.use('/api/orders', orders);
 
-app.use('/api/orders' , orderd);
-
-
-
-moongoose.connect("mongodb+srv://surajyadavsy039:Suraj123@cluster0.yassbgc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(()=>{
-console.log("mongodb connect ");
-
-app.listen(Port, () => {
-    console.log(`🚀 Server running on http://localhost:${Port}`);
-});
-
-}).catch(()=>{
-    console.log("not connect");
-})
+// Connect MongoDB
+mongoose.connect("mongodb+srv://surajyadavsy039:Suraj123@cluster0.yassbgc.mongodb.net/?retryWrites=true&w=majority")
+  .then(() => {
+    console.log(" MongoDB connected");
+    app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+  })
+  .catch((err) => console.error(" MongoDB connection error:", err));
