@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 // CORS setup
 app.use(cors({
  origin: [
-    "https://68c5664b58c59800083e93bb--navsatech.netlify.app", // preview build
+    "https://68c5c43758c598000849b4c7--navsatech.netlify.app/", // preview build
     "https://navsatech.netlify.app",                          // final domain
     "http://localhost:5173"                                   // local dev
   ],
