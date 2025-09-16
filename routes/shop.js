@@ -1,66 +1,67 @@
-// routes/shop.js
 const express = require("express");
+const Product = require("../models/Product");
+
 const router = express.Router();
-const Product = require("../model/shopSchme"); // ensure model exports module.exports = mongoose.model(...)
 
-
-// GET all products
+// Get all products
 router.get("/", async (req, res) => {
   try {
     const products = await Product.find().sort({ createdAt: -1 });
     res.json(products);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
     res.status(500).json({ error: "Failed to fetch products" });
   }
 });
 
-// GET single product
+// Get single product
 router.get("/:id", async (req, res) => {
   try {
-    const prod = await Product.findById(req.params.id);
-    if (!prod) return res.status(404).json({ error: "Product not found" });
-    res.json(prod);
-  } catch (err) {
-    console.error(err);
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ error: "Product not found" });
+    res.json(product);
+  } catch (error) {
     res.status(500).json({ error: "Failed to fetch product" });
   }
 });
 
-// CREATE product
+// Create product
 router.post("/", async (req, res) => {
   try {
     const { name, price, description, image } = req.body;
-    if (!name || !price) return res.status(400).json({ error: "Missing fields" });
-    const newP = new Product({ name, price, description, image });
-    await newP.save();
-    res.status(201).json(newP);
-  } catch (err) {
-    console.error(err);
+    if (!name || !price) {
+      return res.status(400).json({ error: "Name & price required" });
+    }
+    const newProduct = new Product({ name, price, description, image });
+    await newProduct.save();
+    res.status(201).json(newProduct);
+  } catch (error) {
     res.status(500).json({ error: "Failed to create product" });
   }
 });
 
-// UPDATE product
+// Update product
 router.put("/:id", async (req, res) => {
   try {
-    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const { name, price, description, image } = req.body;
+    const updated = await Product.findByIdAndUpdate(
+      req.params.id,
+      { name, price, description, image },
+      { new: true }
+    );
     if (!updated) return res.status(404).json({ error: "Product not found" });
     res.json(updated);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
     res.status(500).json({ error: "Failed to update product" });
   }
 });
 
-// DELETE product
+// Delete product
 router.delete("/:id", async (req, res) => {
   try {
-    const del = await Product.findByIdAndDelete(req.params.id);
-    if (!del) return res.status(404).json({ error: "Product not found" });
-    res.json({ message: "Deleted" });
-  } catch (err) {
-    console.error(err);
+    const deleted = await Product.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: "Product not found" });
+    res.json({ message: "Product deleted" });
+  } catch (error) {
     res.status(500).json({ error: "Failed to delete product" });
   }
 });

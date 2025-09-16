@@ -5,16 +5,16 @@ const orderSchema = new mongoose.Schema(
     name: { type: String, required: true },
     address: { type: String, required: true },
     phone: { type: String, required: true },
+
+    // Store product snapshot
     product: {
-      id: { type: Number, required: true },
       name: { type: String, required: true },
-      price: { type: String, required: true },
       description: { type: String },
-      image: { type: String }
-    }
+      price: { type: Number, required: true },
+      image: { type: String },
+    },
   },
   { timestamps: true }
 );
 
-const Order = mongoose.model("Order", orderSchema);
-module.exports = Order;
+module.exports = mongoose.model("Order", orderSchema);

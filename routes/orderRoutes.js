@@ -1,5 +1,5 @@
 const express = require("express");
-const Order = require("../model/Order");
+const Order = require("../models/Order");
 
 const router = express.Router();
 
@@ -12,17 +12,28 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    const newOrder = new Order({ name, address, phone, product });
-    await newOrder.save();
+    // ✅ Save order with product snapshot
+    const newOrder = new Order({
+      name,
+      address,
+      phone,
+      product: {
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        image: product.image,
+      },
+    });
 
+    await newOrder.save();
     res.status(201).json({ message: "✅ Order placed successfully", order: newOrder });
   } catch (error) {
-    console.error("❌ Order Error:", error);
-    res.status(500).json({ error: "Server error while placing order" });
+    console.error("❌ Order Save Error:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
-// Fetch all orders (Admin use)
+// Fetch all orders (Admin panel)
 router.get("/", async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
